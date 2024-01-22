@@ -12,6 +12,19 @@ describe(URL, () => {
     expect(new URL('http://acme.com').toString()).toBe('http://acme.com/');
     expect(new URL('/home', 'http://localhost:3000').toString()).toBe('http://localhost:3000/home');
   });
+
+  it(`can construct urls using env vars`, () => {
+    jest.resetModules();
+    const OLD_ENV = process.env;
+    process.env = { ...OLD_ENV };
+
+    process.env.API_URL = 'http://localhost:3000';
+    expect(new URL('/test-endpoint', process.env.EXPO_PUBLIC_API_URL).toString()).toBe(
+      'http://localhost:3000/test-endpoint'
+    );
+
+    process.env = OLD_ENV;
+  });
 });
 
 describe(URLSearchParams, () => {
